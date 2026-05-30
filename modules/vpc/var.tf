@@ -1,13 +1,14 @@
-variable "vpc_cidr" { default = "10.0.0.0/16" }
-# variable "public_subnet_cidrs" { default = ["10.0.1.0/24", "10.0.2.0/24"] }
-# variable "private_subnet_cidrs" { default = ["10.0.3.0/24", "10.0.4.0/24"] }
+variable "vpc_cidr" { } # This variable is used to define the CIDR block for the VPC
 
-variable "public_subnet_cidrs" {}
-variable "private_subnet_cidrs" {}
-variable "aws_region" { }
-variable "available_zone" {
+variable "aws_region" { } # This variable is used to define the AWS region
+
+variable "public_subnet" {} # This variable is used to define the CIDR blocks for the public subnets
+
+variable "private_subnet" {} # This variable is used to define the CIDR blocks for the private subnets
+
+variable "available_zone" { # This variable is used to define the availability zones for the subnets
     type = list(string)
     description = "The availability zone to deploy the VPC resources in"
 }
 
-variable "instance_type" {  }
+variable "target_env" {}

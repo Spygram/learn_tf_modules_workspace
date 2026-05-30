@@ -1,9 +1,16 @@
 module "vpc" {
-  source         = "./modules/vpc"
+  source = "./modules/vpc"
+
+  target_env     = terraform.workspace
+
+  aws_region           = var.aws_region     # This variable is defined in variables.tf
+
+  vpc_cidr             = var.vpc_cidr       # This variable is defined in variables.tf
+
+  available_zone       = data.aws_availability_zones.available.names # This data source is defined in data.tf
   
-  aws_region     = var.aws_region
-  available_zone = data.aws_availability_zones.available.names
-  public_subnet_cidrs  = var.public_subnet_cidrs
-  private_subnet_cidrs = var.private_subnet_cidrs
-  instance_type   = var.instance_type
+  public_subnet  = var.public_subnet_cidrs # This variable is defined in variables.tf
+  
+  private_subnet = var.private_subnet_cidrs # This variable is defined in variables.tf
+  
 }

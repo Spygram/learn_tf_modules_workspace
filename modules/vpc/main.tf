@@ -1,3 +1,6 @@
+# This Terraform configuration defines a VPC with public and private subnets, an Internet Gateway, and a route table for the public subnets. It also includes a VPC endpoint for S3 and a DB subnet group for RDS.
+
+#
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
@@ -7,11 +10,13 @@ resource "aws_vpc" "main" {
     }
 }
 
+# Create an Internet Gateway and attach it to the VPC
 resource "aws_internet_gateway" "sd-gw" {
   vpc_id = aws_vpc.main.id
   tags   = { Name = "${var.target_env}-igw" }
 }
 
+# Create public subnets
 resource "aws_subnet" "public" {
   count                   = 2
   vpc_id                  = aws_vpc.main.id
@@ -21,6 +26,7 @@ resource "aws_subnet" "public" {
   tags                    = { Name = "${var.target_env}-public-subnet-${count.index + 1}" }
 }
 
+# Create private subnets in the same availability zones as the public subnets
 resource "aws_subnet" "private" {
   count                   = 2
   vpc_id                  = aws_vpc.main.id
@@ -30,6 +36,15 @@ resource "aws_subnet" "private" {
   tags                    = { Name = "${var.target_env}-private-subnet-${count.index + 1}" }
 }
 
+# Create a DB subnet group for RDS using the private subnets
+resource "aws_db_subnet_group" "rds" {
+  name       = "${var.target_env}-rds-subnet-group"
+  subnet_ids = aws_subnet.private[*].id # Uses your private subnet IDs automatically
+
+  tags = { Name = "${var.target_env}-rds-subnet-group" }
+}
+
+# Create a route table for public subnets
 resource "aws_route_table" "public-rt" {
   vpc_id = aws_vpc.main.id
   route {

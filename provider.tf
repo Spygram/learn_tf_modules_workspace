@@ -7,6 +7,13 @@ terraform {
   }
 }
 
+backend "s3" {
+    bucket  = "sujansd2026"
+    key     = "vpc/terraform.tfstate"
+    region  = var.aws_region
+    encrypt = true
+  }
+
 provider "aws" {
   # Configuration options
   region = var.aws_region

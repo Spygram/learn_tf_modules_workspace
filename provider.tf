@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     bucket  = "sujansd2026"
     key     = "vpc/terraform.tfstate"
-    region  = var.aws_region
+    region  = "us-east-1"
     encrypt = true
   }
 }

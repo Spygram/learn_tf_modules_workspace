@@ -4,4 +4,3 @@ variable "vpc_cidr" { default = "10.0.0.0/16" }
 variable "public_subnet_cidrs" {}
 variable "private_subnet_cidrs" {}
 #variable "instance_type" {  }
-#variable "target_environment" { }

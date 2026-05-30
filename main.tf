@@ -19,3 +19,12 @@ module "compute" {
   instance_type     = var.instance_type
   db_endpoint       = module.rds.rds_endpoint
 }
+
+# database module
+module "rds" {
+  source               = "./modules/rds"
+  target_env           = terraform.workspace
+  vpc_id               = module.vpc.vpc_id
+  db_subnet_group_name = module.vpc.db_subnet_group_name
+  db_password          = "SuperSecretPassword123!"
+}
